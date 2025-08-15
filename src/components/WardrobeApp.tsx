@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
@@ -6,11 +6,14 @@ import { AISearchBar } from '@/components/AISearchBar';
 import { Dashboard } from '@/components/Dashboard';
 import { CategoryView } from '@/components/CategoryView';
 import { ItemDetailView } from '@/components/ItemDetailView';
+import { AIRecommendationsPage } from '@/components/AIRecommendationsPage';
+import { TrendAnalysisPage } from '@/components/TrendAnalysisPage';
+import { SettingsPage } from '@/components/SettingsPage';
 import { Brain, Sparkles } from 'lucide-react';
 
 export const WardrobeApp = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [aiActive, setAiActive] = useState(false);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [aiActive, setAiActive] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-background" style={{ aspectRatio: '7150/1840' }}>
@@ -61,6 +64,9 @@ export const WardrobeApp = () => {
                 <Route path="/" element={<Dashboard searchQuery={searchQuery} />} />
                 <Route path="/category/:categoryId" element={<CategoryView />} />
                 <Route path="/item/:itemId" element={<ItemDetailView />} />
+                <Route path="/ai/recommendations" element={<AIRecommendationsPage />} />
+                <Route path="/ai/trends" element={<TrendAnalysisPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
               </Routes>
             </div>
           </main>

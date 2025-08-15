@@ -1,14 +1,15 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Heart, Share2, Calendar, Tag, Zap, Brain } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Calendar, Tag, Zap, Brain, ShoppingBag, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import smartBlazer from '@/assets/smart-blazer.jpg';
+import neuralTshirt from '@/assets/neural-tshirt.jpg';
+import holographicSneakers from '@/assets/holographic-sneakers.jpg';
 
-export const ItemDetailView: React.FC = () => {
-  const { itemId } = useParams<{ itemId: string }>();
-
-  // Mock item data
-  const item = {
-    id: itemId,
+// Mock detailed item data
+const mockItemDetails = {
+  '1': {
+    id: '1',
     name: 'Smart Blazer Pro',
     brand: 'NeoFashion',
     category: 'Formal Wear',
@@ -22,7 +23,104 @@ export const ItemDetailView: React.FC = () => {
     price: '$299',
     sustainability: 'A+',
     care: 'Self-Cleaning, Occasional AI Refresh',
-    description: 'Revolutionary smart blazer with integrated climate control and professional styling. Features adaptive temperature regulation and automatic wrinkle resistance.'
+    description: 'Revolutionary smart blazer with integrated climate control and professional styling. Features adaptive temperature regulation and automatic wrinkle resistance.',
+    image: smartBlazer
+  },
+  '2': {
+    id: '2',
+    name: 'Neural Fabric T-Shirt',
+    brand: 'TechWear Labs',
+    category: 'Casual Wear',
+    color: 'Charcoal',
+    size: 'L',
+    material: 'Neural Nano-Fiber',
+    purchaseDate: '2035-04-20',
+    lastWorn: '1 week ago',
+    timesWorn: 8,
+    aiTags: ['Moisture-Wicking', 'Self-Cleaning', 'Adaptive-Fit', 'Odor-Resistant'],
+    price: '$149',
+    sustainability: 'A',
+    care: 'Self-Maintaining, No Washing Required',
+    description: 'Advanced neural fabric technology that adapts to your body temperature and maintains optimal comfort throughout the day.',
+    image: neuralTshirt
+  },
+  '4': {
+    id: '4',
+    name: 'Holographic Sneakers',
+    brand: 'Quantum Footwear',
+    category: 'Footwear',
+    color: 'Prismatic',
+    size: '10',
+    material: 'Holographic Polymer',
+    purchaseDate: '2035-02-10',
+    lastWorn: '5 days ago',
+    timesWorn: 15,
+    aiTags: ['Color-Changing', 'Anti-Gravity Sole', 'Energy-Return', 'Personalized-Fit'],
+    price: '$399',
+    sustainability: 'B+',
+    care: 'Auto-Clean Surface, Solar Charging',
+    description: 'Revolutionary footwear with color-changing holographic surface and anti-gravity sole technology for ultimate comfort and style.',
+    image: holographicSneakers
+  },
+  '31': {
+    id: '31',
+    name: 'UV-Reactive Tank Top',
+    brand: 'SolarWear',
+    category: 'Summer Wear',
+    color: 'Solar Yellow',
+    size: 'M',
+    material: 'UV-Responsive Fiber',
+    purchaseDate: '2035-05-01',
+    lastWorn: '1 day ago',
+    timesWorn: 6,
+    aiTags: ['UV-Protection', 'Color-Change', 'Cooling-Effect', 'Energy-Harvest'],
+    price: '$89',
+    sustainability: 'A+',
+    care: 'Solar-Powered Self-Clean',
+    description: 'Innovative tank top that changes color based on UV exposure while providing maximum sun protection and cooling comfort.',
+    image: null
+  },
+  '32': {
+    id: '32',
+    name: 'Cooling Shorts',
+    brand: 'ChillTech',
+    category: 'Activewear',
+    color: 'Ice Blue',
+    size: 'L',
+    material: 'Thermo-Regulation Mesh',
+    purchaseDate: '2035-05-15',
+    lastWorn: '3 days ago',
+    timesWorn: 4,
+    aiTags: ['Temperature-Control', 'Quick-Dry', 'Stretch-Fit', 'Moisture-Wicking'],
+    price: '$119',
+    sustainability: 'A',
+    care: 'Quick-Dry Technology, Minimal Care',
+    description: 'Advanced cooling shorts with built-in temperature regulation system for optimal comfort during hot weather and physical activities.',
+    image: null
+  }
+};
+
+export const ItemDetailView: React.FC = () => {
+  const { itemId } = useParams<{ itemId: string }>();
+
+  // Get item details or use default
+  const item = mockItemDetails[itemId as keyof typeof mockItemDetails] || {
+    id: itemId || 'unknown',
+    name: 'Futuristic Garment',
+    brand: 'AI Fashion',
+    category: 'Unknown',
+    color: 'Digital',
+    size: 'Auto-Fit',
+    material: 'Smart Fabric',
+    purchaseDate: '2035-01-01',
+    lastWorn: 'Recently',
+    timesWorn: 0,
+    aiTags: ['Smart-Tech', 'Futuristic'],
+    price: '$199',
+    sustainability: 'A+',
+    care: 'AI-Maintained',
+    description: 'A futuristic garment with advanced smart technology and AI-powered features.',
+    image: null
   };
 
   return (
@@ -48,6 +146,10 @@ export const ItemDetailView: React.FC = () => {
             <Share2 className="w-4 h-4 mr-2" />
             Share
           </Button>
+          <Button variant="outline" size="sm" className="glass-effect">
+            <ShoppingBag className="w-4 h-4 mr-2" />
+            Buy Similar
+          </Button>
         </div>
       </div>
 
@@ -55,16 +157,30 @@ export const ItemDetailView: React.FC = () => {
         {/* Item Visual */}
         <div className="space-y-4">
           <div className="aspect-[3/4] bg-gradient-to-br from-muted to-muted/50 rounded-2xl relative overflow-hidden glass-effect">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-muted-foreground">
-                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="text-2xl">👔</span>
+            {item.image ? (
+              <img 
+                src={item.image} 
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center text-muted-foreground">
+                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                    <span className="text-2xl">👔</span>
+                  </div>
+                  <p className="text-sm">3D Model View</p>
                 </div>
-                <p className="text-sm">3D Model View</p>
               </div>
-            </div>
+            )}
             <div className="absolute top-4 right-4 z-10">
               <div className="w-4 h-4 rounded-full bg-success animate-pulse" />
+            </div>
+            <div className="absolute bottom-4 left-4 z-10">
+              <div className="flex items-center space-x-2">
+                <Star className="w-4 h-4 text-warning fill-warning" />
+                <span className="text-warning text-sm font-medium">4.9</span>
+              </div>
             </div>
           </div>
 
@@ -78,6 +194,25 @@ export const ItemDetailView: React.FC = () => {
               <Calendar className="w-4 h-4 mr-2" />
               Schedule
             </Button>
+          </div>
+
+          {/* AI Usage Analytics */}
+          <div className="futuristic-card">
+            <h4 className="font-semibold mb-3">Usage Analytics</h4>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">This Month</span>
+                <span className="text-sm font-medium">{Math.floor(item.timesWorn / 3)} times</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Total Wears</span>
+                <span className="text-sm font-medium">{item.timesWorn} times</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Cost per Wear</span>
+                <span className="text-sm font-medium text-success">${(parseInt(item.price.replace('$', '')) / Math.max(item.timesWorn, 1)).toFixed(2)}</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -108,8 +243,8 @@ export const ItemDetailView: React.FC = () => {
                 <span className="ml-2 font-medium">{item.purchaseDate}</span>
               </div>
               <div>
-                <span className="text-muted-foreground">Times Worn:</span>
-                <span className="ml-2 font-medium">{item.timesWorn}</span>
+                <span className="text-muted-foreground">Price:</span>
+                <span className="ml-2 font-medium text-accent">{item.price}</span>
               </div>
             </div>
           </div>
@@ -131,6 +266,12 @@ export const ItemDetailView: React.FC = () => {
                 </span>
               ))}
             </div>
+          </div>
+
+          {/* Description */}
+          <div className="futuristic-card">
+            <h3 className="font-semibold mb-3">Description</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
           </div>
 
           {/* Care Instructions */}
@@ -159,6 +300,13 @@ export const ItemDetailView: React.FC = () => {
                   <span className="text-sm">Add Neural Fabric Tie</span>
                 </div>
                 <span className="text-xs text-success">89% match</span>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded bg-gradient-to-br from-neural-secondary to-primary"></div>
+                  <span className="text-sm">Complete with Smart Loafers</span>
+                </div>
+                <span className="text-xs text-success">92% match</span>
               </div>
             </div>
           </div>

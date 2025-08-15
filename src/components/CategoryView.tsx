@@ -4,7 +4,7 @@ import { ArrowLeft, Filter, Grid, List, Search } from 'lucide-react';
 import { WardrobeItemCard } from '@/components/WardrobeItemCard';
 import { Button } from '@/components/ui/button';
 
-// Mock data for category items
+// Mock data for all category items
 const mockCategoryItems = {
   'last-used': [
     { id: '1', name: 'Smart Blazer Pro', category: 'Formal', lastWorn: '2 days ago', image: '', color: 'Navy Blue', aiTags: ['Professional', 'Climate-Smart'] },
@@ -12,9 +12,62 @@ const mockCategoryItems = {
     { id: '3', name: 'Adaptive Joggers', category: 'Activewear', lastWorn: '3 days ago', image: '', color: 'Space Gray', aiTags: ['Temperature-Regulating', 'Stretch-Tech'] },
     { id: '4', name: 'Holographic Sneakers', category: 'Footwear', lastWorn: '5 days ago', image: '', color: 'Prismatic', aiTags: ['Color-Changing', 'Anti-Gravity Sole'] },
   ],
+  'last-month': [
+    { id: '11', name: 'Quantum Suit', category: 'Formal', lastWorn: '2 weeks ago', image: '', color: 'Midnight Black', aiTags: ['Wrinkle-Free', 'Auto-Fit'] },
+    { id: '12', name: 'Bio-Leather Jacket', category: 'Outerwear', lastWorn: '3 weeks ago', image: '', color: 'Cognac', aiTags: ['Self-Healing', 'Weather-Adaptive'] },
+    { id: '13', name: 'Memory Foam Dress', category: 'Formal', lastWorn: '1 week ago', image: '', color: 'Deep Purple', aiTags: ['Shape-Memory', 'Stain-Resistant'] },
+    { id: '14', name: 'Smart Denim', category: 'Casual', lastWorn: '4 days ago', image: '', color: 'Indigo', aiTags: ['Stretch-Tech', 'Moisture-Control'] },
+  ],
+  'last-purchased': [
+    { id: '21', name: 'Nano-Fiber Coat', category: 'Outerwear', lastWorn: 'Never', image: '', color: 'Arctic White', aiTags: ['Insulation-Tech', 'Self-Cleaning'] },
+    { id: '22', name: 'Holographic Tie', category: 'Accessories', lastWorn: 'Never', image: '', color: 'Rainbow', aiTags: ['Color-Shift', 'Professional'] },
+    { id: '23', name: 'Smart Watch Pro', category: 'Accessories', lastWorn: 'Never', image: '', color: 'Titanium', aiTags: ['Health-Monitor', 'AI-Assistant'] },
+    { id: '24', name: 'Carbon Fiber Belt', category: 'Accessories', lastWorn: 'Never', image: '', color: 'Matte Black', aiTags: ['Ultra-Light', 'Adjustable'] },
+  ],
+  'summer-2035': [
+    { id: '31', name: 'UV-Reactive Tank Top', category: 'Casual', lastWorn: '1 day ago', image: '', color: 'Solar Yellow', aiTags: ['UV-Protection', 'Color-Change'] },
+    { id: '32', name: 'Cooling Shorts', category: 'Activewear', lastWorn: '3 days ago', image: '', color: 'Ice Blue', aiTags: ['Temperature-Control', 'Quick-Dry'] },
+    { id: '33', name: 'Breathable Dress', category: 'Formal', lastWorn: '1 week ago', image: '', color: 'Coral Pink', aiTags: ['Air-Flow', 'Wrinkle-Free'] },
+    { id: '34', name: 'Solar Sandals', category: 'Footwear', lastWorn: '2 days ago', image: '', color: 'Golden', aiTags: ['Energy-Harvest', 'Cooling-Sole'] },
+    { id: '35', name: 'Climate Vest', category: 'Outerwear', lastWorn: '5 days ago', image: '', color: 'Sky Blue', aiTags: ['Personal-AC', 'Lightweight'] },
+    { id: '36', name: 'Smart Sunglasses', category: 'Accessories', lastWorn: '1 day ago', image: '', color: 'Mirror Silver', aiTags: ['Auto-Tint', 'AR-Display'] },
+  ],
+  'winter-2035': [
+    { id: '41', name: 'Thermal Parka', category: 'Outerwear', lastWorn: 'Not in season', image: '', color: 'Arctic Navy', aiTags: ['Self-Heating', 'Storm-Proof'] },
+    { id: '42', name: 'Smart Wool Sweater', category: 'Casual', lastWorn: 'Not in season', image: '', color: 'Charcoal Gray', aiTags: ['Temperature-Adapt', 'Odor-Resist'] },
+    { id: '43', name: 'Heated Gloves', category: 'Accessories', lastWorn: 'Not in season', image: '', color: 'Midnight Black', aiTags: ['Wireless-Heat', 'Touch-Compatible'] },
+    { id: '44', name: 'Insulated Boots', category: 'Footwear', lastWorn: 'Not in season', image: '', color: 'Titanium', aiTags: ['Anti-Slip', 'Heat-Core'] },
+  ],
+  'formal': [
+    { id: '1', name: 'Smart Blazer Pro', category: 'Formal', lastWorn: '2 days ago', image: '', color: 'Navy Blue', aiTags: ['Professional', 'Climate-Smart'] },
+    { id: '11', name: 'Quantum Suit', category: 'Formal', lastWorn: '2 weeks ago', image: '', color: 'Midnight Black', aiTags: ['Wrinkle-Free', 'Auto-Fit'] },
+    { id: '13', name: 'Memory Foam Dress', category: 'Formal', lastWorn: '1 week ago', image: '', color: 'Deep Purple', aiTags: ['Shape-Memory', 'Stain-Resistant'] },
+    { id: '33', name: 'Breathable Dress', category: 'Formal', lastWorn: '1 week ago', image: '', color: 'Coral Pink', aiTags: ['Air-Flow', 'Wrinkle-Free'] },
+    { id: '51', name: 'Digital Tie', category: 'Accessories', lastWorn: '1 week ago', image: '', color: 'Electric Blue', aiTags: ['LED-Pattern', 'Professional'] },
+  ],
+  'casual': [
+    { id: '2', name: 'Neural Fabric T-Shirt', category: 'Casual', lastWorn: '1 week ago', image: '', color: 'Charcoal', aiTags: ['Moisture-Wicking', 'Self-Cleaning'] },
+    { id: '14', name: 'Smart Denim', category: 'Casual', lastWorn: '4 days ago', image: '', color: 'Indigo', aiTags: ['Stretch-Tech', 'Moisture-Control'] },
+    { id: '31', name: 'UV-Reactive Tank Top', category: 'Casual', lastWorn: '1 day ago', image: '', color: 'Solar Yellow', aiTags: ['UV-Protection', 'Color-Change'] },
+    { id: '42', name: 'Smart Wool Sweater', category: 'Casual', lastWorn: 'Not in season', image: '', color: 'Charcoal Gray', aiTags: ['Temperature-Adapt', 'Odor-Resist'] },
+  ],
+  'accessories': [
+    { id: '22', name: 'Holographic Tie', category: 'Accessories', lastWorn: 'Never', image: '', color: 'Rainbow', aiTags: ['Color-Shift', 'Professional'] },
+    { id: '23', name: 'Smart Watch Pro', category: 'Accessories', lastWorn: 'Never', image: '', color: 'Titanium', aiTags: ['Health-Monitor', 'AI-Assistant'] },
+    { id: '24', name: 'Carbon Fiber Belt', category: 'Accessories', lastWorn: 'Never', image: '', color: 'Matte Black', aiTags: ['Ultra-Light', 'Adjustable'] },
+    { id: '36', name: 'Smart Sunglasses', category: 'Accessories', lastWorn: '1 day ago', image: '', color: 'Mirror Silver', aiTags: ['Auto-Tint', 'AR-Display'] },
+    { id: '43', name: 'Heated Gloves', category: 'Accessories', lastWorn: 'Not in season', image: '', color: 'Midnight Black', aiTags: ['Wireless-Heat', 'Touch-Compatible'] },
+    { id: '51', name: 'Digital Tie', category: 'Accessories', lastWorn: '1 week ago', image: '', color: 'Electric Blue', aiTags: ['LED-Pattern', 'Professional'] },
+  ],
   'favorites': [
     { id: '5', name: 'Quantum Leather Jacket', category: 'Outerwear', lastWorn: '1 week ago', image: '', color: 'Midnight Black', aiTags: ['Self-Repair', 'Weather-Adaptive'] },
     { id: '6', name: 'Holographic Dress', category: 'Formal', lastWorn: '2 weeks ago', image: '', color: 'Iridescent', aiTags: ['Color-Morphing', 'Wrinkle-Free'] },
+    { id: '1', name: 'Smart Blazer Pro', category: 'Formal', lastWorn: '2 days ago', image: '', color: 'Navy Blue', aiTags: ['Professional', 'Climate-Smart'] },
+    { id: '4', name: 'Holographic Sneakers', category: 'Footwear', lastWorn: '5 days ago', image: '', color: 'Prismatic', aiTags: ['Color-Changing', 'Anti-Gravity Sole'] },
+  ],
+  'archived': [
+    { id: '61', name: 'Vintage Smart Shirt', category: 'Casual', lastWorn: '3 months ago', image: '', color: 'Faded Blue', aiTags: ['Retro-Tech', 'Classic-Fit'] },
+    { id: '62', name: 'Old Denim Jacket', category: 'Outerwear', lastWorn: '6 months ago', image: '', color: 'Worn Indigo', aiTags: ['Vintage', 'Comfort-Fit'] },
   ]
 };
 
