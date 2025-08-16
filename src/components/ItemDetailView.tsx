@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Share2, Calendar, Tag, Zap, Brain, ShoppingBag, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DetailedClothingModel3D } from '@/components/3D/DetailedClothingModel3D';
 import smartBlazer from '@/assets/smart-blazer.jpg';
 import neuralTshirt from '@/assets/neural-tshirt.jpg';
 import holographicSneakers from '@/assets/holographic-sneakers.jpg';
@@ -18,135 +19,201 @@ const mockItemDetails = {
     material: 'Climate-Smart Fabric',
     purchaseDate: '2035-03-15',
     lastWorn: '2 days ago',
-    timesWorn: 12,
-    aiTags: ['Professional', 'Climate-Smart', 'Wrinkle-Resistant', 'Moisture-Wicking'],
-    price: '$299',
-    sustainability: 'A+',
-    care: 'Self-Cleaning, Occasional AI Refresh',
-    description: 'Revolutionary smart blazer with integrated climate control and professional styling. Features adaptive temperature regulation and automatic wrinkle resistance.',
-    image: smartBlazer
+    wearCount: 12,
+    aiTags: ['Professional', 'Versatile', 'Climate-Smart'],
+    image: smartBlazer,
+    description: 'A revolutionary blazer with integrated temperature regulation and smart fabric technology.',
+    stylingTips: [
+      'Perfect for important meetings and formal events',
+      'Pairs excellently with smart trousers',
+      'The climate-smart fabric adapts to ambient temperature'
+    ],
+    careInstructions: 'Machine wash cold, hang dry. Smart fabric maintains its properties.',
+    sustainabilityScore: 95,
+    price: '$299'
   },
   '2': {
     id: '2',
-    name: 'Neural Fabric T-Shirt',
-    brand: 'TechWear Labs',
-    category: 'Casual Wear',
+    name: 'Neural T-Shirt',
+    brand: 'TechWear',
+    category: 'Casual',
     color: 'Charcoal',
     size: 'L',
-    material: 'Neural Nano-Fiber',
-    purchaseDate: '2035-04-20',
-    lastWorn: '1 week ago',
-    timesWorn: 8,
-    aiTags: ['Moisture-Wicking', 'Self-Cleaning', 'Adaptive-Fit', 'Odor-Resistant'],
-    price: '$149',
-    sustainability: 'A',
-    care: 'Self-Maintaining, No Washing Required',
-    description: 'Advanced neural fabric technology that adapts to your body temperature and maintains optimal comfort throughout the day.',
-    image: neuralTshirt
+    material: 'Bio-Responsive Cotton',
+    purchaseDate: '2035-02-20',
+    lastWorn: '1 day ago',
+    wearCount: 8,
+    aiTags: ['Comfortable', 'Tech-Enhanced', 'Casual'],
+    image: neuralTshirt,
+    description: 'A cutting-edge t-shirt with neural pattern design and bio-responsive fabric.',
+    stylingTips: [
+      'Great for casual outings and creative work',
+      'Layering piece for smart-casual looks',
+      'Bio-responsive fabric adjusts to your body temperature'
+    ],
+    careInstructions: 'Gentle machine wash, air dry to preserve neural patterns.',
+    sustainabilityScore: 88,
+    price: '$89'
+  },
+  '3': {
+    id: '3',
+    name: 'Holographic Sneakers',
+    brand: 'FutureStep',
+    category: 'Footwear',
+    color: 'Holographic',
+    size: '10',
+    material: 'Quantum Mesh',
+    purchaseDate: '2035-01-10',
+    lastWorn: '3 days ago',
+    wearCount: 15,
+    aiTags: ['Futuristic', 'Comfortable', 'Statement'],
+    image: holographicSneakers,
+    description: 'Next-generation sneakers with holographic finish and quantum mesh technology.',
+    stylingTips: [
+      'Perfect statement piece for tech-forward outfits',
+      'Ideal for casual and street style looks',
+      'Holographic finish changes color with light'
+    ],
+    careInstructions: 'Wipe clean with damp cloth. Avoid direct sunlight for extended periods.',
+    sustainabilityScore: 92,
+    price: '$199'
   },
   '4': {
     id: '4',
-    name: 'Holographic Sneakers',
-    brand: 'Quantum Footwear',
-    category: 'Footwear',
-    color: 'Prismatic',
-    size: '10',
-    material: 'Holographic Polymer',
-    purchaseDate: '2035-02-10',
-    lastWorn: '5 days ago',
-    timesWorn: 15,
-    aiTags: ['Color-Changing', 'Anti-Gravity Sole', 'Energy-Return', 'Personalized-Fit'],
-    price: '$399',
-    sustainability: 'B+',
-    care: 'Auto-Clean Surface, Solar Charging',
-    description: 'Revolutionary footwear with color-changing holographic surface and anti-gravity sole technology for ultimate comfort and style.',
-    image: holographicSneakers
-  },
-  '31': {
-    id: '31',
-    name: 'UV-Reactive Tank Top',
-    brand: 'SolarWear',
-    category: 'Summer Wear',
-    color: 'Solar Yellow',
+    name: 'Cyber Jacket',
+    brand: 'QuantumStyle',
+    category: 'Outerwear',
+    color: 'Electric Blue',
     size: 'M',
-    material: 'UV-Responsive Fiber',
-    purchaseDate: '2035-05-01',
-    lastWorn: '1 day ago',
-    timesWorn: 6,
-    aiTags: ['UV-Protection', 'Color-Change', 'Cooling-Effect', 'Energy-Harvest'],
-    price: '$89',
-    sustainability: 'A+',
-    care: 'Solar-Powered Self-Clean',
-    description: 'Innovative tank top that changes color based on UV exposure while providing maximum sun protection and cooling comfort.',
-    image: null
+    material: 'Nano-Fiber',
+    purchaseDate: '2035-04-05',
+    lastWorn: '1 week ago',
+    wearCount: 5,
+    aiTags: ['Weather-Resistant', 'Stylish', 'High-Tech'],
+    image: null,
+    description: 'Advanced jacket with integrated weather protection and style-forward design.',
+    stylingTips: [
+      'Perfect for outdoor activities and urban exploration',
+      'Great layering piece for transitional weather',
+      'Nano-fiber technology provides superior protection'
+    ],
+    careInstructions: 'Professional cleaning recommended to maintain nano-fiber properties.',
+    sustainabilityScore: 90,
+    price: '$399'
   },
-  '32': {
-    id: '32',
-    name: 'Cooling Shorts',
-    brand: 'ChillTech',
-    category: 'Activewear',
-    color: 'Ice Blue',
+  '5': {
+    id: '5',
+    name: 'Adaptive Pants',
+    brand: 'FlexWear',
+    category: 'Bottoms',
+    color: 'Graphite',
     size: 'L',
-    material: 'Thermo-Regulation Mesh',
-    purchaseDate: '2035-05-15',
-    lastWorn: '3 days ago',
-    timesWorn: 4,
-    aiTags: ['Temperature-Control', 'Quick-Dry', 'Stretch-Fit', 'Moisture-Wicking'],
-    price: '$119',
-    sustainability: 'A',
-    care: 'Quick-Dry Technology, Minimal Care',
-    description: 'Advanced cooling shorts with built-in temperature regulation system for optimal comfort during hot weather and physical activities.',
-    image: null
+    material: 'Memory Fabric',
+    purchaseDate: '2035-03-01',
+    lastWorn: '4 days ago',
+    wearCount: 10,
+    aiTags: ['Comfortable', 'Adaptive', 'Professional'],
+    image: null,
+    description: 'Revolutionary pants with memory fabric that adapts to your body and movement.',
+    stylingTips: [
+      'Versatile for both professional and casual settings',
+      'Memory fabric provides comfort throughout the day',
+      'Perfect for travel and long work days'
+    ],
+    careInstructions: 'Machine wash warm, tumble dry low to maintain fabric memory.',
+    sustainabilityScore: 87,
+    price: '$159'
   }
 };
 
 export const ItemDetailView: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
+  const [show3D, setShow3D] = useState(true);
+  
+  const item = itemId ? mockItemDetails[itemId] : null;
 
-  // Get item details or use default
-  const item = mockItemDetails[itemId as keyof typeof mockItemDetails] || {
-    id: itemId || 'unknown',
-    name: 'Futuristic Garment',
-    brand: 'AI Fashion',
-    category: 'Unknown',
-    color: 'Digital',
-    size: 'Auto-Fit',
-    material: 'Smart Fabric',
-    purchaseDate: '2035-01-01',
-    lastWorn: 'Recently',
-    timesWorn: 0,
-    aiTags: ['Smart-Tech', 'Futuristic'],
-    price: '$199',
-    sustainability: 'A+',
-    care: 'AI-Maintained',
-    description: 'A futuristic garment with advanced smart technology and AI-powered features.',
-    image: null
+  const getItemType = (category: string): 'shirt' | 'pants' | 'shoes' | 'blazer' | 'sneakers' | 'tshirt' | 'jacket' | 'accessory' => {
+    switch (category?.toLowerCase()) {
+      case 'formal wear':
+      case 'blazer':
+      case 'blazers': return 'blazer';
+      case 'casual':
+      case 't-shirt':
+      case 'tshirt':
+      case 't-shirts': return 'tshirt';
+      case 'shirt':
+      case 'shirts': return 'shirt';
+      case 'bottoms':
+      case 'pants':
+      case 'trousers': return 'pants';
+      case 'footwear':
+      case 'shoes': return 'shoes';
+      case 'sneakers': return 'sneakers';
+      case 'outerwear':
+      case 'jacket':
+      case 'jackets': return 'jacket';
+      default: return 'accessory';
+    }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Link to="/" className="p-2 rounded-lg hover:bg-muted/50 transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold">{item.name}</h1>
-            <p className="text-muted-foreground">{item.brand} • {item.category}</p>
-          </div>
-        </div>
+  const getColorHex = (colorName: string): string => {
+    const colorMap: { [key: string]: string } = {
+      'navy blue': '#1E40AF',
+      'charcoal': '#374151',
+      'holographic': '#8B5CF6',
+      'electric blue': '#3B82F6',
+      'graphite': '#4B5563',
+      'blue': '#3B82F6',
+      'navy': '#1E40AF',
+      'black': '#1F2937',
+      'white': '#F9FAFB',
+      'grey': '#6B7280',
+      'gray': '#6B7280',
+      'red': '#EF4444',
+      'green': '#10B981',
+      'purple': '#8B5CF6',
+      'yellow': '#F59E0B',
+      'orange': '#F97316',
+      'pink': '#EC4899',
+    };
+    return colorMap[colorName?.toLowerCase()] || '#8B5CF6';
+  };
 
-        <div className="flex items-center space-x-3">
-          <Button variant="outline" size="sm" className="glass-effect">
-            <Heart className="w-4 h-4 mr-2" />
-            Favorite
+  if (!item) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Item Not Found</h2>
+          <p className="text-muted-foreground mb-6">The item you're looking for doesn't exist.</p>
+          <Link to="/">
+            <Button>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Wardrobe
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <Link to="/">
+          <Button variant="ghost" size="sm">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
           </Button>
-          <Button variant="outline" size="sm" className="glass-effect">
-            <Share2 className="w-4 h-4 mr-2" />
-            Share
+        </Link>
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm">
+            <Heart className="w-4 h-4" />
           </Button>
-          <Button variant="outline" size="sm" className="glass-effect">
+          <Button variant="ghost" size="sm">
+            <Share2 className="w-4 h-4" />
+          </Button>
+          <Button variant="default" size="sm">
             <ShoppingBag className="w-4 h-4 mr-2" />
             Buy Similar
           </Button>
@@ -157,109 +224,136 @@ export const ItemDetailView: React.FC = () => {
         {/* Item Visual */}
         <div className="space-y-4">
           <div className="aspect-[3/4] bg-gradient-to-br from-muted to-muted/50 rounded-2xl relative overflow-hidden glass-effect">
-            {item.image ? (
-              <img 
-                src={item.image} 
+            {/* View Toggle Buttons */}
+            <div className="absolute top-4 left-4 z-20 flex space-x-2">
+              <Button
+                variant={show3D ? "default" : "outline"}
+                size="sm"
+                onClick={() => setShow3D(true)}
+                className="text-xs backdrop-blur-sm"
+              >
+                3D Model
+              </Button>
+              {item.image && (
+                <Button
+                  variant={!show3D ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setShow3D(false)}
+                  className="text-xs backdrop-blur-sm"
+                >
+                  Photo
+                </Button>
+              )}
+            </div>
+
+            {show3D ? (
+              <div className="w-full h-full">
+                <DetailedClothingModel3D
+                  type={getItemType(item.category)}
+                  color={getColorHex(item.color)}
+                  itemName={item.name}
+                  brand={item.brand}
+                />
+              </div>
+            ) : item.image ? (
+              <img
+                src={item.image}
                 alt={item.name}
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-muted-foreground">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <span className="text-2xl">👔</span>
-                  </div>
-                  <p className="text-sm">3D Model View</p>
-                </div>
+              <div className="w-full h-full">
+                <DetailedClothingModel3D
+                  type={getItemType(item.category)}
+                  color={getColorHex(item.color)}
+                  itemName={item.name}
+                  brand={item.brand}
+                />
               </div>
             )}
+            
             <div className="absolute top-4 right-4 z-10">
               <div className="w-4 h-4 rounded-full bg-success animate-pulse" />
             </div>
             <div className="absolute bottom-4 left-4 z-10">
               <div className="flex items-center space-x-2">
-                <Star className="w-4 h-4 text-warning fill-warning" />
-                <span className="text-warning text-sm font-medium">4.9</span>
+                <Star className="w-4 h-4 text-accent" />
+                <span className="text-sm text-white font-medium">AI Score: {item.sustainabilityScore}/100</span>
               </div>
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Quick Actions */}
           <div className="grid grid-cols-2 gap-3">
-            <Button className="ai-button">
-              <Zap className="w-4 h-4 mr-2" />
+            <Button variant="outline" className="flex items-center justify-center">
+              <Calendar className="w-4 h-4 mr-2" />
               Quick Wear
             </Button>
-            <Button variant="outline" className="glass-effect">
-              <Calendar className="w-4 h-4 mr-2" />
+            <Button variant="outline" className="flex items-center justify-center">
+              <Zap className="w-4 h-4 mr-2" />
               Schedule
             </Button>
-          </div>
-
-          {/* AI Usage Analytics */}
-          <div className="futuristic-card">
-            <h4 className="font-semibold mb-3">Usage Analytics</h4>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">This Month</span>
-                <span className="text-sm font-medium">{Math.floor(item.timesWorn / 3)} times</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Total Wears</span>
-                <span className="text-sm font-medium">{item.timesWorn} times</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Cost per Wear</span>
-                <span className="text-sm font-medium text-success">${(parseInt(item.price.replace('$', '')) / Math.max(item.timesWorn, 1)).toFixed(2)}</span>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* Item Details */}
         <div className="space-y-6">
           {/* Basic Info */}
-          <div className="futuristic-card">
-            <h3 className="font-semibold mb-4">Item Details</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">{item.name}</h1>
+            <p className="text-lg text-muted-foreground mb-4">{item.brand}</p>
+            <p className="text-muted-foreground">{item.description}</p>
+          </div>
+
+          {/* Details Grid */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-4">
               <div>
-                <span className="text-muted-foreground">Color:</span>
-                <span className="ml-2 font-medium">{item.color}</span>
+                <h3 className="font-semibold mb-2">Category</h3>
+                <p className="text-muted-foreground">{item.category}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Size:</span>
-                <span className="ml-2 font-medium">{item.size}</span>
+                <h3 className="font-semibold mb-2">Color</h3>
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-4 h-4 rounded-full border"
+                    style={{ backgroundColor: getColorHex(item.color) }}
+                  />
+                  <span className="text-muted-foreground">{item.color}</span>
+                </div>
               </div>
               <div>
-                <span className="text-muted-foreground">Material:</span>
-                <span className="ml-2 font-medium">{item.material}</span>
+                <h3 className="font-semibold mb-2">Size</h3>
+                <p className="text-muted-foreground">{item.size}</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold mb-2">Material</h3>
+                <p className="text-muted-foreground">{item.material}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Sustainability:</span>
-                <span className="ml-2 font-medium text-success">{item.sustainability}</span>
+                <h3 className="font-semibold mb-2">Last Worn</h3>
+                <p className="text-muted-foreground">{item.lastWorn}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Purchase Date:</span>
-                <span className="ml-2 font-medium">{item.purchaseDate}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Price:</span>
-                <span className="ml-2 font-medium text-accent">{item.price}</span>
+                <h3 className="font-semibold mb-2">Times Worn</h3>
+                <p className="text-muted-foreground">{item.wearCount}</p>
               </div>
             </div>
           </div>
 
           {/* AI Tags */}
-          <div className="futuristic-card">
-            <h3 className="font-semibold mb-3 flex items-center space-x-2">
-              <Brain className="w-4 h-4 text-primary" />
-              <span>AI Features</span>
+          <div>
+            <h3 className="font-semibold mb-3 flex items-center">
+              <Brain className="w-4 h-4 mr-2" />
+              AI Analysis
             </h3>
             <div className="flex flex-wrap gap-2">
               {item.aiTags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center space-x-1 px-3 py-1 bg-primary/20 text-primary rounded-full text-sm"
+                  className="inline-flex items-center space-x-1 px-3 py-1 bg-accent/20 text-accent rounded-full text-sm"
                 >
                   <Tag className="w-3 h-3" />
                   <span>{tag}</span>
@@ -268,46 +362,30 @@ export const ItemDetailView: React.FC = () => {
             </div>
           </div>
 
-          {/* Description */}
-          <div className="futuristic-card">
-            <h3 className="font-semibold mb-3">Description</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+          {/* Styling Tips */}
+          <div>
+            <h3 className="font-semibold mb-3">Styling Tips</h3>
+            <ul className="space-y-2">
+              {item.stylingTips.map((tip, index) => (
+                <li key={index} className="text-muted-foreground flex items-start">
+                  <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
+                  {tip}
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Care Instructions */}
-          <div className="futuristic-card">
-            <h3 className="font-semibold mb-3">Care Instructions</h3>
-            <p className="text-sm text-muted-foreground">{item.care}</p>
+          <div>
+            <h3 className="font-semibold mb-2">Care Instructions</h3>
+            <p className="text-muted-foreground">{item.careInstructions}</p>
           </div>
 
-          {/* AI Recommendations */}
-          <div className="ai-recommendation">
-            <h3 className="font-semibold mb-3 flex items-center space-x-2">
-              <Brain className="w-4 h-4 text-primary neural-animation" />
-              <span>AI Styling Suggestions</span>
-            </h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded bg-gradient-to-br from-primary to-accent"></div>
-                  <span className="text-sm">Pair with Adaptive Chinos</span>
-                </div>
-                <span className="text-xs text-success">95% match</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded bg-gradient-to-br from-accent to-warning"></div>
-                  <span className="text-sm">Add Neural Fabric Tie</span>
-                </div>
-                <span className="text-xs text-success">89% match</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded bg-gradient-to-br from-neural-secondary to-primary"></div>
-                  <span className="text-sm">Complete with Smart Loafers</span>
-                </div>
-                <span className="text-xs text-success">92% match</span>
-              </div>
+          {/* Price */}
+          <div className="pt-4 border-t">
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-semibold">Original Price</span>
+              <span className="text-2xl font-bold text-primary">{item.price}</span>
             </div>
           </div>
         </div>
