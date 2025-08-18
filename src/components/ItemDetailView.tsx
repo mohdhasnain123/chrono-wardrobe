@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Share2, Calendar, Tag, Zap, Brain, ShoppingBag, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DetailedClothingModel3D } from '@/components/3D/DetailedClothingModel3D';
 import smartBlazer from '@/assets/smart-blazer.jpg';
 import neuralTshirt from '@/assets/neural-tshirt.jpg';
 import holographicSneakers from '@/assets/holographic-sneakers.jpg';
@@ -128,33 +127,8 @@ const mockItemDetails = {
 
 export const ItemDetailView: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
-  const [show3D, setShow3D] = useState(true);
   
   const item = itemId ? mockItemDetails[itemId] : null;
-
-  const getItemType = (category: string): 'shirt' | 'pants' | 'shoes' | 'blazer' | 'sneakers' | 'tshirt' | 'jacket' | 'accessory' => {
-    switch (category?.toLowerCase()) {
-      case 'formal wear':
-      case 'blazer':
-      case 'blazers': return 'blazer';
-      case 'casual':
-      case 't-shirt':
-      case 'tshirt':
-      case 't-shirts': return 'tshirt';
-      case 'shirt':
-      case 'shirts': return 'shirt';
-      case 'bottoms':
-      case 'pants':
-      case 'trousers': return 'pants';
-      case 'footwear':
-      case 'shoes': return 'shoes';
-      case 'sneakers': return 'sneakers';
-      case 'outerwear':
-      case 'jacket':
-      case 'jackets': return 'jacket';
-      default: return 'accessory';
-    }
-  };
 
   const getColorHex = (colorName: string): string => {
     const colorMap: { [key: string]: string } = {
@@ -224,51 +198,19 @@ export const ItemDetailView: React.FC = () => {
         {/* Item Visual */}
         <div className="space-y-4">
           <div className="aspect-[3/4] bg-gradient-to-br from-muted to-muted/50 rounded-2xl relative overflow-hidden glass-effect">
-            {/* View Toggle Buttons */}
-            <div className="absolute top-4 left-4 z-20 flex space-x-2">
-              <Button
-                variant={show3D ? "default" : "outline"}
-                size="sm"
-                onClick={() => setShow3D(true)}
-                className="text-xs backdrop-blur-sm"
-              >
-                3D Model
-              </Button>
-              {item.image && (
-                <Button
-                  variant={!show3D ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setShow3D(false)}
-                  className="text-xs backdrop-blur-sm"
-                >
-                  Photo
-                </Button>
-              )}
-            </div>
-
-            {show3D ? (
-              <div className="w-full h-full">
-                <DetailedClothingModel3D
-                  type={getItemType(item.category)}
-                  color={getColorHex(item.color)}
-                  itemName={item.name}
-                  brand={item.brand}
-                />
-              </div>
-            ) : item.image ? (
+            {item.image ? (
               <img
                 src={item.image}
                 alt={item.name}
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full">
-                <DetailedClothingModel3D
-                  type={getItemType(item.category)}
-                  color={getColorHex(item.color)}
-                  itemName={item.name}
-                  brand={item.brand}
-                />
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-gradient-to-br from-primary/10 to-accent/10">
+                <div className="text-center p-8">
+                  <div className="text-6xl mb-4">👕</div>
+                  <p className="text-lg font-medium">No image available</p>
+                  <p className="text-sm opacity-70">{item.name}</p>
+                </div>
               </div>
             )}
             
@@ -278,7 +220,7 @@ export const ItemDetailView: React.FC = () => {
             <div className="absolute bottom-4 left-4 z-10">
               <div className="flex items-center space-x-2">
                 <Star className="w-4 h-4 text-accent" />
-                <span className="text-sm text-white font-medium">AI Score: {item.sustainabilityScore}/100</span>
+                <span className="text-sm text-white font-medium backdrop-blur-sm bg-black/20 px-2 py-1 rounded">AI Score: {item.sustainabilityScore}/100</span>
               </div>
             </div>
           </div>

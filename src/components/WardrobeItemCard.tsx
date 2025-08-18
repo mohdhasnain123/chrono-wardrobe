@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, Tag } from 'lucide-react';
-import { ClothingModel3D } from '@/components/3D/ClothingModel3D';
 import smartBlazer from '@/assets/smart-blazer.jpg';
 import neuralTshirt from '@/assets/neural-tshirt.jpg';
 import holographicSneakers from '@/assets/holographic-sneakers.jpg';
@@ -21,7 +20,6 @@ interface WardrobeItemCardProps {
 }
 
 export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item }) => {
-  const [show3D, setShow3D] = useState(false);
   
   // Map item IDs to images
   const getItemImage = (id: string) => {
@@ -33,42 +31,6 @@ export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item }) => {
     }
   };
 
-  const getItemType = (category: string): 'shirt' | 'pants' | 'shoes' | 'blazer' | 'sneakers' | 'tshirt' | 'jacket' | 'accessory' => {
-    switch (category.toLowerCase()) {
-      case 'blazer':
-      case 'blazers': return 'blazer';
-      case 't-shirt':
-      case 'tshirt':
-      case 't-shirts': return 'tshirt';
-      case 'shirt':
-      case 'shirts': return 'shirt';
-      case 'pants':
-      case 'trousers': return 'pants';
-      case 'shoes': return 'shoes';
-      case 'sneakers': return 'sneakers';
-      case 'jacket':
-      case 'jackets': return 'jacket';
-      default: return 'accessory';
-    }
-  };
-
-  const getColorHex = (colorName: string): string => {
-    const colorMap: { [key: string]: string } = {
-      'blue': '#3B82F6',
-      'navy': '#1E40AF',
-      'black': '#1F2937',
-      'white': '#F9FAFB',
-      'grey': '#6B7280',
-      'gray': '#6B7280',
-      'red': '#EF4444',
-      'green': '#10B981',
-      'purple': '#8B5CF6',
-      'yellow': '#F59E0B',
-      'orange': '#F97316',
-      'pink': '#EC4899',
-    };
-    return colorMap[colorName.toLowerCase()] || '#8B5CF6';
-  };
 
   const itemImage = getItemImage(item.id);
 
@@ -85,28 +47,8 @@ export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item }) => {
             <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
           </div>
           
-          {/* 3D Toggle Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShow3D(!show3D);
-            }}
-            className="absolute top-2 left-2 z-30 w-8 h-8 bg-primary/80 hover:bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 backdrop-blur-sm group-hover:scale-110"
-          >
-            3D
-          </button>
-          
           {/* Content */}
-          {show3D ? (
-            <div className="w-full h-full">
-              <ClothingModel3D 
-                type={getItemType(item.category)}
-                color={getColorHex(item.color)}
-                animated={true}
-              />
-            </div>
-          ) : itemImage ? (
+          {itemImage ? (
             <img 
               src={itemImage} 
               alt={item.name}
@@ -114,11 +56,10 @@ export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item }) => {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-gradient-to-br from-primary/10 to-accent/10">
-              <ClothingModel3D 
-                type={getItemType(item.category)}
-                color={getColorHex(item.color)}
-                animated={true}
-              />
+              <div className="text-center p-4">
+                <div className="text-4xl mb-2">👕</div>
+                <p className="text-sm">No image available</p>
+              </div>
             </div>
           )}
         </div>
