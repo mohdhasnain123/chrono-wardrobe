@@ -14,6 +14,10 @@ import { cn } from "@/lib/utils";
 import { AlertCard } from "./AlertCard";
 import { AlertDetail } from "../alerts/AlertDetail";
 import { RealisticWorldMap } from "./RealisticWorldMap";
+import { SupplyChainMapMain } from "../SupplyChainMapMain";
+import { CapExRecommendations } from "./CapExRecommendations";
+import { CostBreakdownChart } from "./CostBreakdownChart";
+import { PerformanceMetrics } from "./PerformanceMetrics";
 
 interface SupplyChainNode {
   id: string;
@@ -302,7 +306,7 @@ export function SupplyChainMap() {
   );
   const [selectedAlert, setSelectedAlert] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"global" | "region">("global");
-
+  const [kpiModalOpen, setKpiModalOpen] = useState(false);
   const handleAlertClick = (alertId: string) => {
     setSelectedAlert(alertId);
   };
@@ -336,304 +340,58 @@ export function SupplyChainMap() {
           <p className="text-sm text-muted-foreground">
             Real-time network status and risk monitoring
           </p>
-        </div>
+      </div>
         <div className="flex items-center gap-2">
           <Button
             variant={viewMode === "global" ? "default" : "outline"}
             size="sm"
-            onClick={() => setViewMode("global")}
+            onClick={() => setKpiModalOpen(true)}
           >
-            Global
+            KPI Dashboard
           </Button>
-          <Button
-            variant={viewMode === "region" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("region")}
-          >
-            Regional
-          </Button>
-        </div>
-      </div>
-
-      <div className="relative bg-white rounded-xl border-2 border-border shadow-xl overflow-hidden">
-        {/* Realistic World Map with Supply Chain Overlay */}
-        <svg
-          viewBox="0 0 1000 500"
-          className="w-full h-96"
-        >
-          <defs>
-            {/* Glow effect for nodes */}
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
           
-          {/* Realistic world map */}
-          <RealisticWorldMap />
-
-
-          {/* Enhanced Supply Chain Links */}
-          {castrolNodes.map((node, i) => {
-            const pos = projectToSvg(node.location.x, node.location.y);
-            return castrolNodes.slice(i + 1).map((otherNode, j) => {
-              const otherPos = projectToSvg(
-                otherNode.location.x,
-                otherNode.location.y
-              );
-              const hasIssue =
-                node.status !== "normal" || otherNode.status !== "normal";
-
-              return (
-                <g key={`link-${i}-${j}`}>
-                  {/* Shadow/glow line */}
-                  <line
-                    x1={pos.x}
-                    y1={pos.y}
-                    x2={otherPos.x}
-                    y2={otherPos.y}
-                    stroke={hasIssue ? "hsl(var(--warning))" : "hsl(var(--primary))"}
-                    strokeWidth={hasIssue ? "4" : "3"}
-                    opacity="0.15"
-                    strokeLinecap="round"
-                  />
-                  {/* Main line */}
-                  <line
-                    x1={pos.x}
-                    y1={pos.y}
-                    x2={otherPos.x}
-                    y2={otherPos.y}
-                    stroke={hasIssue ? "hsl(var(--warning))" : "hsl(var(--primary))"}
-                    strokeWidth={hasIssue ? "2.5" : "1.5"}
-                    opacity={hasIssue ? "0.9" : "0.5"}
-                    strokeDasharray={hasIssue ? "8,4" : "none"}
-                    strokeLinecap="round"
-                    className="transition-all hover:opacity-100"
-                  >
-                    {hasIssue && (
-                      <animate
-                        attributeName="stroke-dashoffset"
-                        from="0"
-                        to="24"
-                        dur="1s"
-                        repeatCount="indefinite"
-                      />
-                    )}
-                  </line>
-                </g>
-              );
-            });
-          })}
-
-          {/* Enhanced Supply Chain Nodes */}
-          {castrolNodes.map((node) => {
-            const pos = projectToSvg(node.location.x, node.location.y);
-            const statusColor = node.status === "critical" ? "critical" : node.status === "warning" ? "warning" : "primary";
-
-            return (
-              <g key={node.id} className="cursor-pointer" onClick={() => setSelectedNode(node)}>
-                {/* Outer glow ring */}
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r="20"
-                  fill={`hsl(var(--${statusColor}))`}
-                  opacity="0.15"
-                  className="transition-all"
-                />
-                
-                {/* Pulse ring for issues */}
-                {node.status !== "normal" && (
-                  <circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r="18"
-                    fill="none"
-                    stroke={`hsl(var(--${statusColor}))`}
-                    strokeWidth="2"
-                    opacity="0.6"
-                  >
-                    <animate
-                      attributeName="r"
-                      from="18"
-                      to="28"
-                      dur="2s"
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      from="0.6"
-                      to="0"
-                      dur="2s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-                )}
-                
-                {/* Main node circle */}
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r="14"
-                  fill={`hsl(var(--${statusColor}))`}
-                  stroke="white"
-                  strokeWidth="3"
-                  filter="url(#glow)"
-                  className="transition-all hover:r-16"
-                />
-                
-                {/* Inner circle */}
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r="8"
-                  fill="white"
-                  opacity="0.9"
-                  className="pointer-events-none"
-                />
-                
-                {/* Alert badge */}
-                {node.status !== "normal" && (
-                  <g>
-                    <circle
-                      cx={pos.x + 10}
-                      cy={pos.y - 10}
-                      r="6"
-                      fill="hsl(var(--critical))"
-                      stroke="white"
-                      strokeWidth="2"
-                      className="animate-pulse"
-                    />
-                    <text
-                      x={pos.x + 10}
-                      y={pos.y - 7}
-                      textAnchor="middle"
-                      fontSize="8"
-                      fill="white"
-                      fontWeight="bold"
-                    >
-                      !
-                    </text>
-                  </g>
-                )}
-              </g>
-            );
-          })}
-        </svg>
-
-        {/* Legend */}
-        <div className="mt-4 flex flex-wrap gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-success"></div>
-            <span className="text-xs text-muted-foreground">
-              Normal Operations
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-warning"></div>
-            <span className="text-xs text-muted-foreground">Risk Detected</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-critical"></div>
-            <span className="text-xs text-muted-foreground">
-              Critical Issue
-            </span>
-          </div>
         </div>
-
-        {/* Node Details Panel */}
-        {selectedNode && (
-          <div className="absolute top-0 right-0 w-80 p-4 bg-card border border-border rounded-lg shadow-lg">
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  {getNodeIcon(selectedNode.type, selectedNode.status)}
-                  <h4 className="font-semibold text-foreground">
-                    {selectedNode.name}
-                  </h4>
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {selectedNode.region}
-                </Badge>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSelectedNode(null)}
-              >
-                ✕
-              </Button>
-            </div>
-
-            <div
-              className={cn(
-                "p-3 rounded-md border",
-                getStatusColor(selectedNode.status)
-              )}
-            >
-              <div className="space-y-2">
-                {selectedNode.details.capacity && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Capacity:</span>
-                    <span className="font-medium">
-                      {selectedNode.details.capacity}
-                    </span>
-                  </div>
-                )}
-                {selectedNode.details.utilization && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Utilization:</span>
-                    <span className="font-medium">
-                      {selectedNode.details.utilization}
-                    </span>
-                  </div>
-                )}
-                {selectedNode.details.inventory && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Inventory:</span>
-                    <span className="font-medium">
-                      {selectedNode.details.inventory}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {selectedNode.details.issues &&
-                selectedNode.details.issues.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-border/50">
-                    <div className="flex items-center gap-1 mb-2">
-                      <AlertTriangle className="w-4 h-4 text-warning" />
-                      <span className="text-sm font-medium">Active Issues</span>
-                    </div>
-                    <ul className="space-y-1">
-                      {selectedNode.details.issues.map((issue, index) => (
-                        <li
-                          key={index}
-                          className="text-xs text-muted-foreground"
-                        >
-                          • {issue}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-            </div>
-
-            <div className="mt-3 flex gap-2">
-              <Button size="sm" variant="outline" className="flex-1">
-                View Details
-              </Button>
-              <Button size="sm" variant="outline" className="flex-1">
-                Create Alert
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
+
+      <div className="h-[600px]">
+          <SupplyChainMapMain />
+        </div>
     </Card>
+
+   
+       {/* KPI Modal */}
+      {kpiModalOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div
+      className="
+        bg-white rounded-lg shadow-lg
+        w-full max-w-5xl
+        max-h-[90vh]
+        relative
+        flex flex-col
+      "
+    >
+      {/* Close Button */}
+      <button
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
+        onClick={() => setKpiModalOpen(false)}
+        aria-label="Close"
+      >
+        ×
+      </button>
+      {/* Modal Header */}
+      <h2 className="text-xl font-semibold mb-4 px-6 pt-6">KPI Dashboard</h2>
+      {/* Modal Content - scrollable if needed */}
+      <div className="overflow-y-auto px-6 pb-6" style={{ maxHeight: "70vh" }}>
+        <div className="space-y-6">
+          <CostBreakdownChart />
+          <PerformanceMetrics />
+          <CapExRecommendations />
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
     {/* Alerts Inbox - moved outside the Card */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
