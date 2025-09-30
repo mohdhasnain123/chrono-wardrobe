@@ -181,7 +181,7 @@ export function KPIDetailModal({ isOpen, onClose, kpiTitle, kpiData }: KPIDetail
             <TrendChart
               title={`${kpiTitle} vs Target`}
               data={detailData.trendData}
-              color={`bg-kpi-${kpiData.color}`}
+              color="bg-success"
             />
           </div>
 
