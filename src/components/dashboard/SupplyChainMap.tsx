@@ -317,10 +317,10 @@ export function SupplyChainMap() {
     );
   }
 
-  // Convert real coordinates to SVG coordinates (simplified projection)
+  // Convert real coordinates to SVG coordinates (enhanced projection)
   const projectToSvg = (lon: number, lat: number) => {
-    const x = ((lon + 180) / 360) * 800;
-    const y = ((90 - lat) / 180) * 400;
+    const x = ((lon + 180) / 360) * 1000;
+    const y = ((90 - lat) / 180) * 500;
     return { x, y };
   };
 
@@ -355,47 +355,79 @@ export function SupplyChainMap() {
       </div>
 
       <div className="relative">
-        {/* World Map SVG */}
+        {/* Enhanced World Map SVG */}
         <svg
-          viewBox="0 0 800 400"
-          className="w-full h-64 bg-secondary/20 rounded-lg border"
+          viewBox="0 0 1000 500"
+          className="w-full h-96 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl border-2 border-border shadow-lg"
         >
-          {/* Simple world map outline */}
+          {/* Enhanced grid pattern */}
           <defs>
             <pattern
               id="grid"
-              width="40"
-              height="40"
+              width="50"
+              height="50"
               patternUnits="userSpaceOnUse"
             >
               <path
-                d="M 40 0 L 0 0 0 40"
+                d="M 50 0 L 0 0 0 50"
                 fill="none"
                 stroke="hsl(var(--border))"
                 strokeWidth="0.5"
-                opacity="0.3"
+                opacity="0.2"
               />
             </pattern>
+            
+            {/* Glow effect for nodes */}
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            
+            {/* Gradient for ocean */}
+            <linearGradient id="ocean" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{stopColor: 'hsl(200, 80%, 95%)', stopOpacity: 0.3}} />
+              <stop offset="100%" style={{stopColor: 'hsl(200, 80%, 85%)', stopOpacity: 0.5}} />
+            </linearGradient>
           </defs>
-          <rect width="800" height="400" fill="url(#grid)" />
+          
+          {/* Ocean background */}
+          <rect width="1000" height="500" fill="url(#ocean)" />
+          <rect width="1000" height="500" fill="url(#grid)" />
 
-          {/* Continents (simplified) */}
+          {/* Enhanced Continents */}
           <g
-            fill="hsl(var(--muted))"
-            stroke="hsl(var(--border))"
-            strokeWidth="1"
+            fill="hsl(0, 0%, 98%)"
+            stroke="hsl(142, 85%, 45%)"
+            strokeWidth="1.5"
+            opacity="0.9"
           >
             {/* North America */}
-            <path d="M 50 80 L 180 70 L 200 140 L 80 160 Z" opacity="0.6" />
+            <path d="M 80 100 L 180 85 L 220 95 L 240 150 L 200 180 L 120 200 L 80 160 Z" 
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
+            {/* South America */}
+            <path d="M 200 220 L 240 210 L 260 280 L 220 310 L 180 290 Z"
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
             {/* Europe */}
-            <path d="M 350 60 L 420 50 L 430 100 L 340 110 Z" opacity="0.6" />
+            <path d="M 450 70 L 520 60 L 540 100 L 500 130 L 440 120 Z" 
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
+            {/* Africa */}
+            <path d="M 480 160 L 540 150 L 580 240 L 520 290 L 460 260 Z"
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
             {/* Asia */}
-            <path d="M 450 40 L 650 30 L 680 120 L 440 130 Z" opacity="0.6" />
+            <path d="M 560 50 L 800 40 L 840 160 L 760 180 L 540 170 Z" 
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
             {/* India */}
-            <path d="M 550 140 L 590 130 L 600 180 L 540 190 Z" opacity="0.6" />
+            <path d="M 680 170 L 730 160 L 750 230 L 700 250 L 670 220 Z"
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
+            {/* Australia */}
+            <path d="M 780 280 L 860 270 L 880 320 L 820 340 L 760 320 Z"
+              className="hover:fill-primary/10 transition-all cursor-pointer" />
           </g>
 
-          {/* Supply Chain Links */}
+          {/* Enhanced Supply Chain Links */}
           {castrolNodes.map((node, i) => {
             const pos = projectToSvg(node.location.x, node.location.y);
             return castrolNodes.slice(i + 1).map((otherNode, j) => {
@@ -407,60 +439,136 @@ export function SupplyChainMap() {
                 node.status !== "normal" || otherNode.status !== "normal";
 
               return (
-                <line
-                  key={`link-${i}-${j}`}
-                  x1={pos.x}
-                  y1={pos.y}
-                  x2={otherPos.x}
-                  y2={otherPos.y}
-                  stroke={
-                    hasIssue ? "hsl(var(--warning))" : "hsl(var(--success))"
-                  }
-                  strokeWidth={hasIssue ? "2" : "1"}
-                  opacity={hasIssue ? "0.8" : "0.3"}
-                  strokeDasharray={hasIssue ? "4,4" : "none"}
-                />
+                <g key={`link-${i}-${j}`}>
+                  {/* Shadow/glow line */}
+                  <line
+                    x1={pos.x}
+                    y1={pos.y}
+                    x2={otherPos.x}
+                    y2={otherPos.y}
+                    stroke={hasIssue ? "hsl(var(--warning))" : "hsl(var(--primary))"}
+                    strokeWidth={hasIssue ? "4" : "3"}
+                    opacity="0.15"
+                    strokeLinecap="round"
+                  />
+                  {/* Main line */}
+                  <line
+                    x1={pos.x}
+                    y1={pos.y}
+                    x2={otherPos.x}
+                    y2={otherPos.y}
+                    stroke={hasIssue ? "hsl(var(--warning))" : "hsl(var(--primary))"}
+                    strokeWidth={hasIssue ? "2.5" : "1.5"}
+                    opacity={hasIssue ? "0.9" : "0.5"}
+                    strokeDasharray={hasIssue ? "8,4" : "none"}
+                    strokeLinecap="round"
+                    className="transition-all hover:opacity-100"
+                  >
+                    {hasIssue && (
+                      <animate
+                        attributeName="stroke-dashoffset"
+                        from="0"
+                        to="24"
+                        dur="1s"
+                        repeatCount="indefinite"
+                      />
+                    )}
+                  </line>
+                </g>
               );
             });
           })}
 
-          {/* Supply Chain Nodes */}
+          {/* Enhanced Supply Chain Nodes */}
           {castrolNodes.map((node) => {
             const pos = projectToSvg(node.location.x, node.location.y);
+            const statusColor = node.status === "critical" ? "critical" : node.status === "warning" ? "warning" : "primary";
 
             return (
-              <g key={node.id}>
+              <g key={node.id} className="cursor-pointer" onClick={() => setSelectedNode(node)}>
+                {/* Outer glow ring */}
                 <circle
                   cx={pos.x}
                   cy={pos.y}
-                  r="12"
-                  fill={`hsl(var(--${
-                    node.status === "critical"
-                      ? "critical"
-                      : node.status === "warning"
-                      ? "warning"
-                      : "success"
-                  }))`}
-                  stroke="hsl(var(--background))"
-                  strokeWidth="2"
-                  className="cursor-pointer hover:r-14 transition-all"
-                  onClick={() => setSelectedNode(node)}
+                  r="20"
+                  fill={`hsl(var(--${statusColor}))`}
+                  opacity="0.15"
+                  className="transition-all"
                 />
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r="6"
-                  fill="hsl(var(--background))"
-                  className="pointer-events-none"
-                />
+                
+                {/* Pulse ring for issues */}
                 {node.status !== "normal" && (
                   <circle
-                    cx={pos.x + 8}
-                    cy={pos.y - 8}
-                    r="4"
-                    fill="hsl(var(--critical))"
-                    className="animate-pulse"
-                  />
+                    cx={pos.x}
+                    cy={pos.y}
+                    r="18"
+                    fill="none"
+                    stroke={`hsl(var(--${statusColor}))`}
+                    strokeWidth="2"
+                    opacity="0.6"
+                  >
+                    <animate
+                      attributeName="r"
+                      from="18"
+                      to="28"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      from="0.6"
+                      to="0"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                )}
+                
+                {/* Main node circle */}
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r="14"
+                  fill={`hsl(var(--${statusColor}))`}
+                  stroke="white"
+                  strokeWidth="3"
+                  filter="url(#glow)"
+                  className="transition-all hover:r-16"
+                />
+                
+                {/* Inner circle */}
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r="8"
+                  fill="white"
+                  opacity="0.9"
+                  className="pointer-events-none"
+                />
+                
+                {/* Alert badge */}
+                {node.status !== "normal" && (
+                  <g>
+                    <circle
+                      cx={pos.x + 10}
+                      cy={pos.y - 10}
+                      r="6"
+                      fill="hsl(var(--critical))"
+                      stroke="white"
+                      strokeWidth="2"
+                      className="animate-pulse"
+                    />
+                    <text
+                      x={pos.x + 10}
+                      y={pos.y - 7}
+                      textAnchor="middle"
+                      fontSize="8"
+                      fill="white"
+                      fontWeight="bold"
+                    >
+                      !
+                    </text>
+                  </g>
                 )}
               </g>
             );

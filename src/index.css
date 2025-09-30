@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    /* Command Center Dark Theme */
-    --background: 218 23% 10%;
-    --foreground: 218 11% 95%;
+    /* Castrol Light Theme - Clean White Design */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 15%;
 
-    --card: 220 27% 12%;
-    --card-foreground: 218 11% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 15%;
 
-    --popover: 220 27% 12%;
-    --popover-foreground: 218 11% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
 
-    /* Castrol Brand Colors */
+    /* Castrol Brand Green */
     --primary: 142 85% 45%;
-    --primary-foreground: 220 27% 12%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 27% 18%;
-    --secondary-foreground: 218 11% 95%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 220 27% 15%;
-    --muted-foreground: 218 11% 65%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 220 27% 18%;
-    --accent-foreground: 218 11% 95%;
+    --accent: 142 85% 45%;
+    --accent-foreground: 0 0% 100%;
 
     /* Alert Severity Colors */
     --critical: 0 84% 60%;
-    --critical-foreground: 218 11% 95%;
+    --critical-foreground: 0 0% 100%;
     
     --warning: 38 100% 55%;
-    --warning-foreground: 220 27% 12%;
+    --warning-foreground: 0 0% 15%;
     
     --success: 142 85% 45%;
-    --success-foreground: 220 27% 12%;
+    --success-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 218 11% 95%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 27% 20%;
-    --input: 220 27% 15%;
+    --border: 0 0% 90%;
+    --input: 0 0% 96%;
     --ring: 142 85% 45%;
 
     --radius: 8px;
@@ -58,16 +58,16 @@
     --kpi-risk: 0 84% 60%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(142 85% 45%), hsl(142 85% 35%));
-    --gradient-card: linear-gradient(135deg, hsl(220 27% 12%), hsl(220 27% 10%));
+    --gradient-primary: linear-gradient(135deg, hsl(142 85% 45%), hsl(142 85% 38%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%));
     --gradient-critical: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 84% 50%));
     --gradient-warning: linear-gradient(135deg, hsl(38 100% 55%), hsl(38 100% 45%));
-    --gradient-success: linear-gradient(135deg, hsl(142 85% 45%), hsl(142 85% 35%));
+    --gradient-success: linear-gradient(135deg, hsl(142 85% 45%), hsl(142 85% 38%));
 
     /* Shadows */
-    --shadow-command: 0 10px 40px -10px hsl(142 85% 45% / 0.2);
-    --shadow-alert: 0 8px 32px -8px hsl(0 84% 60% / 0.3);
-    --shadow-card: 0 4px 20px -4px hsl(220 27% 8% / 0.5);
+    --shadow-command: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
+    --shadow-alert: 0 8px 32px -8px hsl(0 84% 60% / 0.2);
+    --shadow-card: 0 2px 10px -2px hsl(0 0% 0% / 0.08);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
