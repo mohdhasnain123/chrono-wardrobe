@@ -16,8 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 15%;
 
-    /* Castrol Brand Green */
-    --primary: 142 85% 45%;
+    /* Castrol Brand Green - Official Color #00A651 */
+    --primary: 145 100% 33%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -26,7 +26,7 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 142 85% 45%;
+    --accent: 145 100% 33%;
     --accent-foreground: 0 0% 100%;
 
     /* Alert Severity Colors */
@@ -36,7 +36,7 @@
     --warning: 38 100% 55%;
     --warning-foreground: 0 0% 15%;
     
-    --success: 142 85% 45%;
+    --success: 145 100% 33%;
     --success-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -44,25 +44,25 @@
 
     --border: 0 0% 90%;
     --input: 0 0% 96%;
-    --ring: 142 85% 45%;
+    --ring: 145 100% 33%;
 
     --radius: 8px;
 
     /* KPI Colors */
-    --kpi-revenue: 142 85% 45%;
+    --kpi-revenue: 145 100% 33%;
     --kpi-volume: 199 89% 48%;
     --kpi-otif: 38 100% 55%;
     --kpi-inventory: 277 100% 75%;
     --kpi-forecast: 24 100% 50%;
-    --kpi-health: 142 85% 45%;
+    --kpi-health: 145 100% 33%;
     --kpi-risk: 0 84% 60%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(142 85% 45%), hsl(142 85% 38%));
+    --gradient-primary: linear-gradient(135deg, hsl(145 100% 33%), hsl(145 100% 28%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%));
     --gradient-critical: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 84% 50%));
     --gradient-warning: linear-gradient(135deg, hsl(38 100% 55%), hsl(38 100% 45%));
-    --gradient-success: linear-gradient(135deg, hsl(142 85% 45%), hsl(142 85% 38%));
+    --gradient-success: linear-gradient(135deg, hsl(145 100% 33%), hsl(145 100% 28%));
 
     /* Shadows */
     --shadow-command: 0 4px 20px -4px hsl(0 0% 0% / 0.1);

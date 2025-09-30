@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { AlertCard } from "./AlertCard";
 import { AlertDetail } from "../alerts/AlertDetail";
+import { RealisticWorldMap } from "./RealisticWorldMap";
 
 interface SupplyChainNode {
   id: string;
@@ -354,78 +355,26 @@ export function SupplyChainMap() {
         </div>
       </div>
 
-      <div className="relative">
-        {/* Enhanced World Map SVG */}
+      <div className="relative bg-white rounded-xl border-2 border-border shadow-xl overflow-hidden">
+        {/* Realistic World Map with Supply Chain Overlay */}
         <svg
           viewBox="0 0 1000 500"
-          className="w-full h-96 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl border-2 border-border shadow-lg"
+          className="w-full h-96"
         >
-          {/* Enhanced grid pattern */}
           <defs>
-            <pattern
-              id="grid"
-              width="50"
-              height="50"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 50 0 L 0 0 0 50"
-                fill="none"
-                stroke="hsl(var(--border))"
-                strokeWidth="0.5"
-                opacity="0.2"
-              />
-            </pattern>
-            
             {/* Glow effect for nodes */}
             <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
               <feMerge>
                 <feMergeNode in="coloredBlur"/>
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
-            
-            {/* Gradient for ocean */}
-            <linearGradient id="ocean" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style={{stopColor: 'hsl(200, 80%, 95%)', stopOpacity: 0.3}} />
-              <stop offset="100%" style={{stopColor: 'hsl(200, 80%, 85%)', stopOpacity: 0.5}} />
-            </linearGradient>
           </defs>
           
-          {/* Ocean background */}
-          <rect width="1000" height="500" fill="url(#ocean)" />
-          <rect width="1000" height="500" fill="url(#grid)" />
+          {/* Realistic world map */}
+          <RealisticWorldMap />
 
-          {/* Enhanced Continents */}
-          <g
-            fill="hsl(0, 0%, 98%)"
-            stroke="hsl(142, 85%, 45%)"
-            strokeWidth="1.5"
-            opacity="0.9"
-          >
-            {/* North America */}
-            <path d="M 80 100 L 180 85 L 220 95 L 240 150 L 200 180 L 120 200 L 80 160 Z" 
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-            {/* South America */}
-            <path d="M 200 220 L 240 210 L 260 280 L 220 310 L 180 290 Z"
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-            {/* Europe */}
-            <path d="M 450 70 L 520 60 L 540 100 L 500 130 L 440 120 Z" 
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-            {/* Africa */}
-            <path d="M 480 160 L 540 150 L 580 240 L 520 290 L 460 260 Z"
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-            {/* Asia */}
-            <path d="M 560 50 L 800 40 L 840 160 L 760 180 L 540 170 Z" 
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-            {/* India */}
-            <path d="M 680 170 L 730 160 L 750 230 L 700 250 L 670 220 Z"
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-            {/* Australia */}
-            <path d="M 780 280 L 860 270 L 880 320 L 820 340 L 760 320 Z"
-              className="hover:fill-primary/10 transition-all cursor-pointer" />
-          </g>
 
           {/* Enhanced Supply Chain Links */}
           {castrolNodes.map((node, i) => {
