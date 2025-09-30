@@ -1,7 +1,7 @@
-import { WardrobeApp } from '@/components/WardrobeApp';
+import Dashboard from "./Dashboard";
 
 const Index = () => {
-  return <WardrobeApp />;
+  return <Dashboard />;
 };
 
 export default Index;
