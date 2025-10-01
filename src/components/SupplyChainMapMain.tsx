@@ -44,7 +44,7 @@ const routes = [
 export const SupplyChainMapMain = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState('');
+  const [mapboxToken, setMapboxToken] = useState('pk.eyJ1IjoiaGFyc2gzMCIsImEiOiJjbWVhMjlmdXEwenBiMmpzaG9jM3p6Zzd1In0.bcCwfO1VpdbJ9RtoPd2__Q');
   const [showTokenInput, setShowTokenInput] = useState(false);
 
   useEffect(() => {
